@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 
     # apps 
     'authentication',
+    'user_prompt',
 ]
 
 MIDDLEWARE = [
