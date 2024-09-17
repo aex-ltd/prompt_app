@@ -1,6 +1,7 @@
 import openai
 from django.conf import settings
 
+# function to connect to chatgpt 
 def ask_chatgpt(question):
     openai.api_key = settings.OPENAI_API_KEY
     try:
