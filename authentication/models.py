@@ -27,13 +27,13 @@ class CustomUser(AbstractUser):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    groups = models.ManyToManyField(Group, blank=True, null=True, related_name='user_groups')
-    permissions = models.ManyToManyField(Permission, blank=True, null=True, related_name='user_permissions')
+    groups = models.ManyToManyField(Group, related_name='user_groups')
+    permissions = models.ManyToManyField(Permission, related_name='user_permissions')
     login_trials = models.IntegerField(default=0)
     last_failed_login = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    USERNAME_FIELD = 'email'
+    # USERNAME_FIELD = 'email'
 
     # increment login trials 
     def increment_login_trials(self):
