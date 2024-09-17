@@ -25,39 +25,40 @@ class SignupForm(forms.Form):
             raise forms.ValidationError('Email can only be between 6 to 60 characters')
         
         # check if email already exists 
-        check_email = User.objects.get(email__iexact=email)
+        check_email = User.objects.filter(email__iexact=email)
         if check_email.exists():
             raise forms.ValidationError(f'Email {email} is not available')
         
         return email 
     
     # Validation password 
-    def clean_password(self):
-        password = self.cleaned_data['password']
-        password_again = self.cleaned_data['password_again']
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password_again = cleaned_data.get('password_again')
 
         if not password or password.isspace():
-            raise forms.ValidationError("Password is required")
+            self.add_error('password', "Password is required")
         
         if len(password) < 8:
-            raise ValidationError('Password must be at least 8 characters')
+            self.add_error('password', 'Password must be at least 8 characters')
         
         if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
-            raise forms.ValidationError("Password mut contain at least one special character")
+            self.add_error('password', "Password must contain at least one special character")
         
         if not any(p.islower() for p in password):
-            raise forms.ValidationError('Password must contain at least one lowercase character')
+            self.add_error('password', 'Password must contain at least one lowercase character')
         
         if not any(p.isupper() for p in password):
-            raise forms.ValidationError('Password must contain at least one uppercase character')
+            self.add_error('password', 'Password must contain at least one uppercase character')
         
         if not any(p.isdigit() for p in password):
-            raise forms.ValidationError('Password must contain at least one digit')
+            self.add_error('password', 'Password must contain at least one digit')
         
-        if password_again != password:
-            raise forms.ValidationError('Both passwords must match')
-        
-        return password 
+        if password and password_again and password != password_again:
+            self.add_error('password_again', 'Both passwords must match')
+
+        return cleaned_data
         
 
 # login form 

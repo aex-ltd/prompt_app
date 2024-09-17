@@ -6,7 +6,7 @@ User = get_user_model()
 
 # text prompt model 
 class TextPrompt(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='textprompt_user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='textprompt_user')
     title = models.CharField(max_length=60, blank=True, null=True)
     context = models.TextField()
     role = models.TextField()
@@ -30,6 +30,7 @@ class TextPrompt(models.Model):
 # file prompt model 
 class FilePrompt(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='fileprompt_user')
+    title = models.CharField(max_length=60, blank=True, null=True)
     file = models.FileField(upload_to='files/', blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
 

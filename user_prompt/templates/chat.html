@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask AI</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user_style.css' %}">
+</head>
+<body>
+    <header class="top-bar">
+        <div class="welcome">
+            <p>Welcome, {{ user.email }}</p>
+        </div>
+        <div class="top-bar-buttons">
+            <a href="{% url 'dashboard' %}" class="btn">Dashboard</a>
+            <a href="{% url 'logout' %}" class="btn logout">Logout</a>
+        </div>
+    </header>
+
+    <div class="prompt-container">
+        <h3>Create New Prompt</h3>
+
+        <form method="post" id="textPromptForm">
+            {% csrf_token %}
+            
+            <!-- Django messages inside form -->
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <!-- Form fields -->
+            <div class="form-field">
+                <label for="id_title">Title</label>
+                {{ form.title }}
+            </div>
+            <div class="form-field">
+                <label for="id_context">Context</label>
+                {{ form.context }}
+            </div>
+            <div class="form-field">
+                <label for="id_role">Role</label>
+                {{ form.role }}
+            </div>
+            <div class="form-field">
+                <label for="id_goal">Goal</label>
+                {{ form.goal }}
+            </div>
+            <div class="form-field">
+                <label for="id_restrictions">Restrictions</label>
+                {{ form.restrictions }}
+            </div>
+            <div class="form-field">
+                <label for="id_audience">Audience</label>
+                {{ form.audience }}
+            </div>
+            <div class="form-field">
+                <label for="id_writing_style">Writing Style</label>
+                {{ form.writing_style }}
+            </div>
+            <div class="form-field">
+                <label for="id_tone">Tone</label>
+                {{ form.tone }}
+            </div>
+            <div class="form-field">
+                <label for="id_keywords">Keywords</label>
+                {{ form.keywords }}
+            </div>
+            <div class="form-field">
+                <label for="id_examples">Examples</label>
+                {{ form.examples }}
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        {% comment %} {% if question and context %} {% endcomment %}
+            <div class="result">
+                <h2>Prompt:</h2>
+                <p>{{ question }}</p>
+                <h2>Response:</h2>
+                <p><b>ChatGPT Response</b></p>
+                <p>{{ response_1 }}</p>
+                <p><b>Gemini Response</b></p>
+                <p>{{ response_2 }}</p>
+            </div>
+        {% comment %} {% endif %} {% endcomment %}
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

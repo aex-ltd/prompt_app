@@ -33,7 +33,10 @@ class CustomUser(AbstractUser):
     last_failed_login = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = CustomManager()  # Ensure the custom manager is used
 
     # increment login trials 
     def increment_login_trials(self):

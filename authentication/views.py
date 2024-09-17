@@ -30,13 +30,14 @@ def signup_view(request):
                 return redirect('login')
             
             except Exception as e:
-                messages.info(request, "Unable to create account at the moment. Please try again later")
+                messages.error(request, "Unable to create account at the moment. Please try again later")
+                print(e)
         else:
             messages.error(request, "Registration failed. Please make sure all fields are correctly filled!")
-            return render(request, 'auth/signup.html', {'form':form})
+            return render(request, 'signup.html', {'form':form})
     
     form = SignupForm()
-    return render(request, 'auth/signup.html', {'form':form})
+    return render(request, 'signup.html', {'form':form})
 
 # login view 
 def login_view(request):
@@ -50,21 +51,22 @@ def login_view(request):
 
             if user is not None:
                 if user.is_active:
-                    login(request, user)
                     messages.success(request, "Login successful")
+                    login(request, user)
                     return redirect('dashboard')
                 
-                messages.info(request, 'Account is inactive. Please contact the admin')
-                return render(request, 'auth/login.html', {'form':form})
+                else:
+                    messages.info(request, 'Account is inactive. Please contact the admin')
             
-            messages.error(request, "Incorrect login details")
-            return render(request, 'auth/login.html', {'form':form})
-        
-        messages.error(request, 'Invalid login details')
-        return render(request, 'auth/login.html', {'form':form})
+            else:
+                messages.error(request, "Incorrect login details")
+                return render(request, 'login.html', {'form':form})
+        else:
+            messages.error(request, 'Invalid login details')
+            return render(request, 'login.html', {'form':form})
     
     form = LoginForm()
-    return render(request, 'auth/login.html', {'form':form})
+    return render(request, 'login.html', {'form':form})
 
 
 # logout request

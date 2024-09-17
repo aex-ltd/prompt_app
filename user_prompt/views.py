@@ -3,10 +3,20 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .services import ask_ai
+from .services import ask_gpt, ask_gemini
 from .forms import TextPromptForm
+from .models import TextPrompt, FilePrompt
 
 User = get_user_model()
+
+
+# dashbaord
+@login_required(login_url='login')
+def dashboard(request):
+    text_prompt = TextPrompt.objects.filter(user=request.user)
+    file_prompt = FilePrompt.objects.filter(user=request.user)
+
+    return render(request, 'dashboard.html', {'text_prompt':text_prompt, 'file_prompt':file_prompt})
 
 # ask ai view 
 @login_required(login_url='login')
@@ -32,19 +42,38 @@ def ask_ai_view(request):
                         f"Keywords: {keywords}\nExamples: {examples}")
 
             # Ask ChatGPT
-            response = ask_ai(question)
-            if response:
-                messages.success(request, "Response fetched successfully!")
-                
-                # Save form data and response to the database
-                text_prompt = form.save(commit=False)
-                text_prompt.response = response
-                text_prompt.user = request.user  # Ensure the user is assigned
-                text_prompt.save()
+            gpt_response = ask_gpt(question)
+            gemini_response = ask_gemini(question)
+            # gemini_response = 
 
-                return render(request, 'chat.html', {'question': question, 'response': response, 'form': form})
+            response_1 = None
+            response_2 = None
+
+            if gpt_response:
+                response_1 = f"{gpt_response} \n"
             else:
-                messages.error(request, "Error fetching response from ChatGPT.")
+                response_1 = f"Unable to get response from ChatGPT\n"
+
+            if gemini_response:
+                 response_2 = f"{gemini_response} \n"
+            else:
+                response_2 = f"Unable to get response from Gemini\n"
+            
+            context = {
+                'form':form,
+                'question':question,
+                'response_1':response_1,
+                'response_2': response_2
+            }
+            # save form data and response to database 
+            text_prompt = form.save(commit=False)
+            text_prompt.response = f"{response_1} \n {response_2} \n"
+            text_prompt.user = request.user
+            text_prompt.save()
+
+            messages.success(request, "Response fetched successfully")
+            return render(request, 'chat.html', context=context)
+                 
         else:
             messages.error(request, "Invalid data format. Please check the form.")
         

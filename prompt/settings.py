@@ -47,7 +47,10 @@ ROOT_URLCONF = 'prompt.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+                 os.path.join(BASE_DIR, 'authentication/templates'),
+                 os.path.join(BASE_DIR, 'user_prompt/templates')],
+                 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,10 +122,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
-
+ 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
+
+OPENAI_API_KEY = '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'
+GEMINI_TOKEN = 'AIzaSyD1mv4mchGXAa2sJ_X5DlYif0brXpLk4uw'

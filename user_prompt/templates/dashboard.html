@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user_style.css' %}">
+</head>
+<body>
+    <div class="container">
+        {% if user.is_authenticated %}
+        <div class="top-dashboard-div">
+            <p class"greetings"><span>Welcome</span>, {{user.email}} </p>
+            <button class="logout"><a href="{% url "logout" %}">Logout</a></button>
+            </div>
+        {% else %}
+        <div class="top-dashboard-div">
+            <p class"greetings"><span>Welcome</span>, Stranger </p>
+            {% comment %} <button class="logout">Logout</button> {% endcomment %}
+        </div>
+        {% endif %}
+        <header>
+            <h1>Prompt Dashboard</h1>
+        </header>
+        <main>
+            <section class="new-prompt">
+                <button id="new-prompt-btn"><a href="{% url "ask_ai" %}"> Create New Prompt</a></button>
+            </section>
+            <section class="history">
+                <p><b>Prompt History</b></p>
+                <p>Custom Prompts</p>
+                {% for text in text_prompt  %}
+                <ul id="prompt-list">
+                    <!-- Example list items -->
+                    <li>
+                        <span>{{text.title}}</span>
+                        <button class="delete-btn">Delete</button>
+                    </li>
+                </ul>
+                {% endfor %}
+                <p>File Prompts</p>
+                {% for file in file_prompts %}
+                <ul id="prompt-list">
+                    <!-- Example list items -->
+                    <li>
+                        <span>{{file.title}}</span>
+                        <button class="delete-btn">Delete</button>
+                    </li>
+                </ul>
+                {% endfor %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>
