@@ -31,10 +31,9 @@ def signup_view(request):
             
             except Exception as e:
                 messages.info(request, "Unable to create account at the moment. Please try again later")
-                return render(request, 'auth/signup.html', {'form':form})
-
-        messages.error(request, "Registration failed. Please make  sure all fields are correctly filled!")
-        return render(request, 'auth/signup.html', {'form':form})
+        else:
+            messages.error(request, "Registration failed. Please make sure all fields are correctly filled!")
+            return render(request, 'auth/signup.html', {'form':form})
     
     form = SignupForm()
     return render(request, 'auth/signup.html', {'form':form})
