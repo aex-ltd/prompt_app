@@ -7,6 +7,7 @@ User = get_user_model()
 # text prompt model 
 class TextPrompt(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='textprompt_user')
+    title = models.CharField(max_length=60, blank=True, null=True)
     context = models.TextField()
     role = models.TextField()
     goal = models.TextField()
@@ -16,7 +17,7 @@ class TextPrompt(models.Model):
     tone = models.TextField()
     keywords = models.TextField()
     examples = models.TextField()
-    file =  models.FileField(upload_to='files/', blank=True, null=True)
+    response =  models.TextField()
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
