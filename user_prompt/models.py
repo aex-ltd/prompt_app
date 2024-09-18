@@ -7,7 +7,7 @@ User = get_user_model()
 # text prompt model 
 class TextPrompt(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='textprompt_user')
-    title = models.CharField(max_length=60, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True, null=True)
     context = models.TextField()
     role = models.TextField()
     goal = models.TextField()
