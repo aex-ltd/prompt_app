@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="{% static 'css/user_style.css' %}">
 </head>
 <body>
+        {% comment %} django messages  {% endcomment %}
+        {% if messages %}
+        <ul class="messages" id="message_class">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
     <div class="container">
         {% if user.is_authenticated %}
         <div class="top-dashboard-div">
@@ -29,28 +38,32 @@
             </section>
             <section class="history">
                 <p><b>Prompt History</b></p>
-                <p>Custom Prompts</p>
+
                 {% for text in text_prompt  %}
+                <p>Custom Prompts</p>
                 <ul id="prompt-list">
                     <!-- Example list items -->
                     <li>
-                        <span>{{text.title}}</span>
-                        <button class="delete-btn">Delete</button>
+                        <span>{{text.title|truncatewords:15}}</span>
+                        <button class="view-btn"><a href=""><b>View</b></a></button>
                     </li>
                 </ul>
                 {% endfor %}
-                <p>File Prompts</p>
+
+
                 {% for file in file_prompts %}
+                <p>File Prompts</p>
                 <ul id="prompt-list">
                     <!-- Example list items -->
                     <li>
-                        <span>{{file.title}}</span>
-                        <button class="delete-btn">Delete</button>
+                        <span>{{file.title|truncatechars:35}}</span>
+                        <button class="view-btn"><a href=""><b>View</b></a></button>
                     </li>
                 </ul>
                 {% endfor %}
             </section>
         </main>
     </div>
+    <script src="{% static 'js/user_script.js' %}"></script>
 </body>
 </html>
