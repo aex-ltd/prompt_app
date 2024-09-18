@@ -56,7 +56,7 @@ def login_view(request):
                     return redirect('dashboard')
                 
                 else:
-                    messages.info(request, 'Account is inactive. Please contact the admin')
+                    messages.error(request, 'Account is inactive. Please contact the admin')
             
             else:
                 messages.error(request, "Incorrect login details")
