@@ -46,7 +46,7 @@ input[type="password"] {
 
 button {
     padding: 10px;
-    background-color: #28a745;
+    background-color: #101820;
     border: none;
     border-radius: 5px;
     color: white;
@@ -56,33 +56,33 @@ button {
 }
 
 button:hover {
-    background-color: #218838;
-}
-
-.messages-container {
-    margin-bottom: 20px;
+    background-color: #101820;
 }
 
 .messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.messages li {
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 4px;
     margin-bottom: 10px;
 }
 
-.messages.success {
+.messages .success {
     background-color: #d4edda;
     color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
-.messages.error {
+.messages .error {
     background-color: #f8d7da;
     color: #721c24;
+    border: 1px solid #f5c6cb;
 }
 
-.messages.info {
-    background-color: #fff3cd;
-    color: #856404;
-}
 
 /* Specific styles for form errors */
 .error {
