@@ -44,7 +44,6 @@ def ask_ai_view(request):
             # Ask ChatGPT
             gpt_response = ask_gpt(question)
             gemini_response = ask_gemini(question)
-            # gemini_response = 
 
             response_1 = None
             response_2 = None
