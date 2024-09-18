@@ -19,14 +19,14 @@
     </header>
 
     <div class="prompt-container">
-        <h3>Create New Prompt</h3>
+        <h2>Create New Prompt</h2>
 
         <form method="post" id="textPromptForm">
             {% csrf_token %}
             
             <!-- Django messages inside form -->
             {% if messages %}
-                <ul class="messages">
+                <ul class="messages" id="message_class">
                     {% for message in messages %}
                         <li class="{{ message.tags }}">{{ message }}</li>
                     {% endfor %}
@@ -79,18 +79,28 @@
         </form>
 
         {% comment %} {% if question and context %} {% endcomment %}
-            <div class="result">
-                <h2>Prompt:</h2>
-                <p>{{ question }}</p>
-                <h2>Response:</h2>
-                <p><b>ChatGPT Response</b></p>
-                <p>{{ response_1 }}</p>
-                <p><b>Gemini Response</b></p>
-                <p>{{ response_2 }}</p>
-            </div>
+
+        {% comment %} {% if context %} {% endcomment %}
+        <div class="result">
+
+            {% if response_1 %}
+            <h4>Prompt:</h4>
+            <p>{{ question }}</p>
+            <h4>Response:</h4>
+            <p><b>ChatGPT Response</b></p>
+            <p>{{ response_1 }}</p>
+            {% endif %}
+
+            {% if response_2 %}
+            <p><b>Gemini Response</b></p>
+            <p>{{ response_2 }}</p>
+            {% endif %}
+        </div>
+        {% comment %} {% endif %} {% endcomment %}
+ 
         {% comment %} {% endif %} {% endcomment %}
     </div>
 
-    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/user_script.js' %}"></script>
 </body>
 </html>
