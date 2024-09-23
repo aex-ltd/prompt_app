@@ -277,6 +277,45 @@ form button:hover {
     }
 }
 
+.label-hint {
+    display: flex;
+    align-items: center;
+}
+
+.label-hint label {
+    margin-right: 10px; /* Space between label and hint */
+    font-size: 13px;
+}
+
+.hint {
+    display: inline-block;
+    margin-left: 0; /* Remove extra margin since they are now side by side */
+    color: #007BFF;
+    cursor: pointer;
+    position: relative;
+}
+
+.hint-box {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 5px;
+    border: 1px solid #ddd;
+    width: 200px;
+    top: 20px;
+    left: 0;
+    z-index: 10;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+}
+
+.hint:hover .hint-box {
+    display: block;
+}
+
+
+
 /* Style for form messages */
 .messages {
     list-style: none;

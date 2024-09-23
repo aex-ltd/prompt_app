@@ -1,11 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager, Group, Permission
+# from django.contrib.auth.models import AbstractUser, UserManager, Group, Permission
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone 
 
 # custom manager class 
-class CustomManager(UserManager):
+class CustomManager(BaseUserManager):
     # create user 
-    def create_user(self, email, password, **extra_fields):
+    def create_user(self, email, password=None, **extra_fields):
         if email is None:
             raise ValueError('Email is required')
         
@@ -16,19 +17,19 @@ class CustomManager(UserManager):
         return user 
     
     # create superuser 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
     
 # custom user 
-class CustomUser(AbstractUser):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=60, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    groups = models.ManyToManyField(Group, related_name='user_groups')
-    permissions = models.ManyToManyField(Permission, related_name='user_permissions')
+    # groups = models.ManyToManyField(Group, related_name='user_groups')
+    # permissions = models.ManyToManyField(Permission, related_name='user_permissions')
     login_trials = models.IntegerField(default=0)
     last_failed_login = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

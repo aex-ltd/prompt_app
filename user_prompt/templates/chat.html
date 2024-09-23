@@ -23,7 +23,7 @@
 
         <form method="post" id="textPromptForm">
             {% csrf_token %}
-            
+
             <!-- Django messages inside form -->
             {% if messages %}
                 <ul class="messages" id="message_class">
@@ -32,57 +32,112 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-            
-            <!-- Form fields -->
+
+            <!-- Form fields with hints -->
             <div class="form-field">
-                <label for="id_title">Title</label>
+                <div class="label-hint">
+                    <label for="id_title">Title</label>
+                    <span class="hint">?
+                        <span class="hint-box">Give your prompt a descriptive title</span>
+                    </span>
+                </div>
                 {{ form.title }}
             </div>
             <div class="form-field">
-                <label for="id_context">Context</label>
+                <div class="label-hint">
+                    <label for="id_context">Set The Context</label>
+                    <span class="hint">?
+                        <span class="hint-box">i.e  who we are, what we do, where we are, etc.</span>
+                    </span>
+                </div>
                 {{ form.context }}
             </div>
             <div class="form-field">
-                <label for="id_role">Role</label>
+                <div class="label-hint">
+                    <label for="id_role">Role Of AI</label>
+                    <span class="hint">?
+                        <span class="hint-box">Define the role of AI. i.e Act as a professional, pretend to be, etc.</span>
+                    </span>
+                </div>
                 {{ form.role }}
             </div>
             <div class="form-field">
-                <label for="id_goal">Goal</label>
+                <div class="label-hint">
+                    <label for="id_goal">Define The Goal</label>
+                    <span class="hint">?
+                        <span class="hint-box">i.e Generate concept, Explain, summarize, Analyse, etc.</span>
+                    </span>
+                </div>
                 {{ form.goal }}
             </div>
             <div class="form-field">
-                <label for="id_restrictions">Restrictions</label>
+                <div class="label-hint">
+                    <label for="id_restrictions">Set Restrictions</label>
+                    <span class="hint">?
+                        <span class="hint-box">i.e Restrict contents to a region, Restrict use of certain words, Explore recent studies, etc.</span>
+                    </span>
+                </div>
                 {{ form.restrictions }}
             </div>
             <div class="form-field">
-                <label for="id_audience">Audience</label>
+                <div class="label-hint">
+                    <label for="id_audience">Audience</label>
+                    <span class="hint">?
+                        <span class="hint-box">Describe your audience. i.e Government Agency, Technicals, Beginners.</span>
+                    </span>
+                </div>
                 {{ form.audience }}
             </div>
             <div class="form-field">
-                <label for="id_writing_style">Writing Style</label>
+                <div class="label-hint">
+                    <label for="id_format_result">Format Result</label>
+                    <span class="hint">?
+                        <span class="hint-box">Describe how the result is to be formated. i.e Output as bullet point, short sentences, Summary timeline, etc.</span>
+                    </span>
+                </div>
+                {{ form.format_result }}
+            </div>
+            <div class="form-field">
+                <div class="label-hint">
+                    <label for="id_writing_style">Writing Style</label>
+                    <span class="hint">?
+                        <span class="hint-box">Specify a writing style. i.e Convincing, Fluent, Use of analogies, Detailed description, etc.</span>
+                    </span>
+                </div>
                 {{ form.writing_style }}
             </div>
             <div class="form-field">
-                <label for="id_tone">Tone</label>
+                <div class="label-hint">
+                    <label for="id_tone">Tone</label>
+                    <span class="hint">?
+                        <span class="hint-box">Specify the tone to be used. i.e Formal, Authoritative, Layman, Friendly, Positive, etc.</span>
+                    </span>
+                </div>
                 {{ form.tone }}
             </div>
             <div class="form-field">
-                <label for="id_keywords">Keywords</label>
+                <div class="label-hint">
+                    <label for="id_keywords">Keywords</label>
+                    <span class="hint">?
+                        <span class="hint-box">Provide certain Keywords to be included in response.</span>
+                    </span>
+                </div>
                 {{ form.keywords }}
             </div>
             <div class="form-field">
-                <label for="id_examples">Examples</label>
+                <div class="label-hint">
+                    <label for="id_examples">Examples</label>
+                    <span class="hint">?
+                        <span class="hint-box">Provide an example.</span>
+                    </span>
+                </div>
                 {{ form.examples }}
             </div>
 
             <button type="submit">Submit</button>
         </form>
 
-        {% comment %} {% if question and context %} {% endcomment %}
-
-        {% comment %} {% if context %} {% endcomment %}
-        <div class="result">
-
+        {% comment %} <div class="result">
             {% if response_1 %}
             <h4>Prompt:</h4>
             <p>{{ question }}</p>
@@ -95,10 +150,7 @@
             <p><b>Gemini Response</b></p>
             <p>{{ response_2 }}</p>
             {% endif %}
-        </div>
-        {% comment %} {% endif %} {% endcomment %}
- 
-        {% comment %} {% endif %} {% endcomment %}
+        </div> {% endcomment %}
     </div>
 
     <script src="{% static 'js/user_script.js' %}"></script>

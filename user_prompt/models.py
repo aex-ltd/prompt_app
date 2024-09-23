@@ -13,6 +13,7 @@ class TextPrompt(models.Model):
     goal = models.TextField()
     restrictions = models.TextField()
     audience = models.TextField()
+    format_result = models.TextField(null=True, blank=True)
     writing_style = models.TextField()
     tone = models.TextField()
     keywords = models.TextField()
