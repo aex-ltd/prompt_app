@@ -1,6 +1,6 @@
 from django import forms 
 
-from .models import TextPrompt, FilePrompt
+from .models import TextPrompt, Hint
 
 # text prompt form 
 class TextPromptForm(forms.ModelForm):

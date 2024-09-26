@@ -277,6 +277,7 @@ form button:hover {
     }
 }
 
+
 .label-hint {
     display: flex;
     align-items: center;
@@ -300,14 +301,33 @@ form button:hover {
     position: absolute;
     background-color: #f9f9f9;
     color: #333;
-    padding: 5px;
+    padding: 10px;
     border: 1px solid #ddd;
-    width: 200px;
-    top: 20px;
-    left: 0;
+    width: 300px;
+    height: 150px;
     z-index: 10;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     font-size: 12px;
+    cursor: grab; /* Shows drag cursor */
+    top: 20px; /* Initial position */
+    left: 0; /* Initial position */
+}
+
+.hint-box.dragging {
+    cursor: grabbing; /* Changes to grabbing when being dragged */
+}
+
+.hint-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: red;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.hint p {
+    margin-top: 20px; /* To create space for the close icon */
 }
 
 .hint:hover .hint-box {

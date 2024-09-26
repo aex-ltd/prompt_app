@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.core.mail import send_mail
-from django.conf import settings 
+# from django.core.mail import send_mail
+# from django.conf import settings 
 
-from .services import ask_gpt, ask_gemini
+# from .services import ask_gpt, ask_gemini
 from .forms import TextPromptForm
-from .models import TextPrompt, FilePrompt
+from .models import TextPrompt, Hint
 
 User = get_user_model()
 
@@ -15,20 +15,17 @@ User = get_user_model()
 # dashbaord
 @login_required(login_url='login')
 def dashboard(request):
+    # get all prompts 
     text_prompt = TextPrompt.objects.filter(user=request.user)
-    file_prompt = FilePrompt.objects.filter(user=request.user)
 
-    return render(request, 'dashboard.html', {'text_prompt':text_prompt, 'file_prompt':file_prompt})
+    return render(request, 'dashboard.html', {'text_prompt':text_prompt})
 
 # ask ai view 
 @login_required(login_url='login')
-def ask_ai_view(request):
+def prompt_view(request):
     if request.method == 'POST':
         form = TextPromptForm(request.POST)
         if form.is_valid():
-            # get user email 
-            email = request.user.email 
-
             # Get form data
             context = form.cleaned_data['context']
             role = form.cleaned_data['role']
@@ -44,54 +41,18 @@ def ask_ai_view(request):
             # Build the prompt with newlines or spaces between sections
             question = f"{context} {role} {goal} {restrictions} {audience} {format_result} {writing_style} {tone} {keywords} {examples}"
 
-            # Ask ChatGPT
-            # gpt_response = ask_gpt(question)
-            # gemini_response = ask_gemini(question)
-
-            # response_1 = None
-            # response_2 = None
-
-            # if gpt_response:
-            #     response_1 = f"{gpt_response} \n"
-            # else:
-            #     response_1 = f"Unable to get response from ChatGPT\n"
-
-            # if gemini_response:
-            #      response_2 = f"{gemini_response} \n"
-            # else:
-            #     response_2 = f"Unable to get response from Gemini\n"
-            
-            # context = {
-            #     'form':form,
-            #     'question':question,
-            #     'response_1':response_1,
-            #     'response_2': response_2
-            # }
-            # # save form data and response to database 
-            # text_prompt = form.save(commit=False)
-            # text_prompt.response = f"{response_1} \n {response_2} \n"
-            # text_prompt.user = request.user
-            # text_prompt.save()
-
-            subject = f"New Prompt Alert"
-            body = f"Prompt: \n {question}"
-
-            # try to send mail
-            try:
-                send_mail(subject, body, "webmaster@aex.com", [email,])
-
-                messages.success(request, "Your prompt has been sent to your email")
-                return redirect('dashboard')
-            
-            except Exception as e:
-                print(e)
-                messages.error(request, "An error occured. Unable to send mail")
-                 
-        else:
-            messages.error(request, "Invalid data format. Please check the form.")
+            # save the prompt 
+            prompt = form.save(commit=False)
+            prompt.user = request.user
+            prompt.question = question
+            prompt.save()
+            # success message 
+            messages.success(request, "Prompt saved successfully")
+            return render(request, 'chat.html', {'form':form, 'question':question})
         
-        # Show the form with errors
-        return render(request, 'chat.html', {'form': form})
+        else:
+            messages.error(request, "Unable to process prompt. Please make sure you provide valid inputs in form fields")
+            return render(request, 'chat.html', {'form':form})
 
     # GET request, render empty form
     form = TextPromptForm()
