@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt-Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user_style.css' %}">
+</head>
+<body>
+    <div class="p-container">
+        <h2>Title</h2>
+        <span>Give your prompt a title.</span>
+        <form class="p-form">
+            <input type="text" name="title">
+            <button type="submit">Next</button>
+        </form>
+    </div>
+    
+    <script src="{% static 'js/user_script.js' %}"></script>
+</body>
+</html>
