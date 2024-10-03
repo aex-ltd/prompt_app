@@ -392,3 +392,77 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #101820;
 }
+
+
+/* prompt styling  */
+.p-container{
+    background-color: white;
+    border-radius: 25px;
+    width: 50%;
+    height: 220px;
+    margin: auto;
+    margin-top: 200px;
+    padding: 10px;
+    text-align: center;
+}
+.p-container span{
+    color: gray;
+}
+
+.pt-container{
+    background-color: white;
+    border-radius: 25px;
+    width: 50%;
+    height: 280px;
+    margin: auto;
+    margin-top: 200px;
+    padding: 10px;
+    text-align: center;
+}
+.pt-container span{
+    color: gray;
+}
+.p-form{
+    width: 100%;
+}
+.p-form textarea{
+    width: 90%;
+    border: 1px solid #ddd;
+    padding: 10px;
+    height: 100px;
+    margin-top: 10px;
+}
+.p-form button{
+    width: 120px;
+    padding: 10px;
+    background-color: #101820;
+    color: white;
+    float: right;
+    margin-top: 25px;
+    border: transparent;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+@media (max-width:1300px) {
+    .pt-container, .p-container{
+        width: 70%;
+    }
+}
+
+@media (max-width:900px) {
+    .pt-container, .p-container{
+        width: 90%;
+    }
+}
+
+.hint-container{
+    width: 90%;
+    background-color: whitesmoke;
+    padding: 10px;
+    margin: auto;
+    margin-top: 180px;
+}
+.hint-container p {
+    word-break: break-all;
+}
