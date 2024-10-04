@@ -29,16 +29,16 @@ class TextPrompt(models.Model):
  
 # hint class 
 class Hint(models.Model):
-    context = models.CharField(max_length=300, null=True, blank=True)
-    role = models.CharField(max_length=300, null=True, blank=True)
-    goal = models.CharField(max_length=300, null=True, blank=True)
-    restrictions = models.CharField(max_length=300, null=True, blank=True)
-    audience = models.CharField(max_length=300, null=True, blank=True)
-    format_result = models.CharField(max_length=300, null=True, blank=True)
-    writing_style = models.CharField(max_length=300, null=True, blank=True)
-    tone = models.CharField(max_length=300, null=True, blank=True)
-    keywords = models.CharField(max_length=300, null=True, blank=True)
-    examples = models.CharField(max_length=300, null=True, blank=True)
+    context = models.TextField(max_length=1000, null=True, blank=True)
+    role = models.TextField(max_length=1000, null=True, blank=True)
+    goal = models.TextField(max_length=1000, null=True, blank=True)
+    restrictions = models.TextField(max_length=1000, null=True, blank=True)
+    audience = models.TextField(max_length=1000, null=True, blank=True)
+    format_result = models.TextField(max_length=1000, null=True, blank=True)
+    writing_style = models.TextField(max_length=1000, null=True, blank=True)
+    tone = models.TextField(max_length=1000, null=True, blank=True)
+    keywords = models.TextField(max_length=1000, null=True, blank=True)
+    examples = models.TextField(max_length=1000, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
