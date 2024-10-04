@@ -423,14 +423,18 @@ button[type="submit"]:hover {
     color: gray;
 }
 .p-form{
-    width: 100%;
+    width: 90%;
+    margin: auto;
+    text-align: center;
+    margin-top: -20px;
 }
 .p-form textarea{
-    width: 90%;
+    width: 98%;
     border: 1px solid #ddd;
-    padding: 10px;
-    height: 100px;
-    margin-top: 10px;
+    padding: 5px;
+    height: 160px;
+    margin: auto;
+    margin-top: 20px;
 }
 .p-form button{
     width: 120px;
@@ -438,7 +442,7 @@ button[type="submit"]:hover {
     background-color: #101820;
     color: white;
     float: right;
-    margin-top: 25px;
+    margin-top: 10px;
     border: transparent;
     border-radius: 10px;
     cursor: pointer;
@@ -465,4 +469,5 @@ button[type="submit"]:hover {
 }
 .hint-container p {
     word-break: break-all;
+    color: gray;
 }
