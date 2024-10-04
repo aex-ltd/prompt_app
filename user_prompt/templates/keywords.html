@@ -8,18 +8,27 @@
     <link rel="stylesheet" href="{% static 'css/user_style.css' %}">
 </head>
 <body>
+    {% if messages %}
+    <ul class="messages" id="message_class">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <div class="pt-container">
-        <h2>Keywords</h2>
+        <h2><label for="id_keywords">Keywords</label></h2>
         <form class="p-form">
-            <textarea placeholder="Set your keywords."></textarea>
+            <textarea name="keywords" id="id_keywords" placeholder="Set your keywords."></textarea>
             <button type="submit">Next</button>
         </form>
     </div>
 
     <!-- hint conatainer  -->
-     <div class="hint-container">
+    <div class="hint-container">
         <h3>Hint</h3>
-        <p>jddhdhdhdhdhdhdhdnnchhdhdhncnhdhdhhdhdhdhdhdhdnnchhdhdhncnhdhdhhdhdhdhdhdhdnnchhdhdhncnhdhdhhdhdhdhdhdhdnnchhdhdhncnhdhdhdkkdkdkdkdnnddh</p>
+        {% for h in hint %}
+        <p> {{h.keywords|linebreaks}} </p>
+        {% endfor %}
      </div>
 
      <script src="{% static 'js/user_script.js' %}"></script>

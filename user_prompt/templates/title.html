@@ -8,15 +8,21 @@
     <link rel="stylesheet" href="{% static 'css/user_style.css' %}">
 </head>
 <body>
+    {% if messages %}
+    <ul class="messages" id="message_class">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <div class="p-container">
-        <h2>Title</h2>
+        <h2><label for="id_title">Title</label></h2>
         <span>Give your prompt a title.</span>
         <form class="p-form">
-            <input type="text" name="title">
+            <input type="text" name="title" id="id_title" required>
             <button type="submit">Next</button>
         </form>
-    </div>
-    
+    </div>    
     <script src="{% static 'js/user_script.js' %}"></script>
 </body>
 </html>
