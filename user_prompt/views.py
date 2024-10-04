@@ -5,7 +5,7 @@ from django.contrib import messages
 
 from .forms import ( TextPromptForm, HintForm, Context, Role,
                     Goal, Restrictions, Audience, FormatResult,
-                      WritingStyle, Tone, Keywords, Examples
+                      WritingStyle, Tone, Keywords, Examples, Title
 )
 
 from .models import TextPrompt, Hint
@@ -59,6 +59,21 @@ def prompt_view(request):
     form = TextPromptForm()
     return render(request, 'chat.html', {'form': form})
 
+# prompt title view 
+def prompt_title(request):
+    hint = Hint.objects.all()
+    if request.method == 'POST':
+        form = Title(request.POST)
+
+        if form.is_valid():
+            pass 
+        
+        else:
+            messages.error(request, "Invalid data format. Please try again")
+            return render(request, 'title.html', {'form':form, 'hint': hint})
+    
+    form = Title()
+    return render(request, 'title.html', {'form':form, 'hint': hint})
 
 # prompt context view 
 def prompt_context(request):
@@ -71,10 +86,10 @@ def prompt_context(request):
         
         else:
             messages.error(request, "Invalid data format. Please try again")
-            return render(request, 'context.html', {'form':form, 'hint': hint.context})
+            return render(request, 'context.html', {'form':form, 'hint': hint})
     
     form = Context()
-    return render(request, 'context.html', {'form':form, 'hint': hint.context})
+    return render(request, 'context.html', {'form':form, 'hint': hint})
 
 
 # prompt role view 
@@ -88,10 +103,10 @@ def prompt_role(request):
         
         else:
             messages.error(request, "Invalid data format. Please try again")
-            return render(request, 'role.html', {'form':form, 'hint': hint.role})
+            return render(request, 'role.html', {'form':form, 'hint': hint})
     
     form = Role()
-    return render(request, 'role.html', {'form':form, 'hint': hint.role})
+    return render(request, 'role.html', {'form':form, 'hint': hint})
 
 
 #prompt goal view 
@@ -105,10 +120,10 @@ def prompt_goal(request):
         
         else:
             messages.error(request, "Invalid data format. Please try again")
-            return render(request, 'goal.html', {'form':form, 'hint': hint.goal})
+            return render(request, 'goal.html', {'form':form, 'hint': hint})
     
     form = Goal()
-    return render(request, 'goal.html', {'form':form, 'hint': hint.goal})
+    return render(request, 'goal.html', {'form':form, 'hint': hint})
 
 
 # prompt restrictions view 
@@ -122,10 +137,10 @@ def prompt_restrictions(request):
         
         else:
             messages.error(request, "Invalid data format. Please try again")
-            return render(request, 'restrictions.html', {'form':form, 'hint': hint.restrictions})
+            return render(request, 'restrictions.html', {'form':form, 'hint': hint})
     
     form = Restrictions()
-    return render(request, 'restrictions.html', {'form':form, 'hint': hint.restrictions})
+    return render(request, 'restrictions.html', {'form':form, 'hint': hint})
 
 # prompt audience view 
 def prompt_audience(request):
@@ -138,10 +153,10 @@ def prompt_audience(request):
         
         else:
             messages.error(request, "Invalid data format. Please try again")
-            return render(request, 'audience.html', {'form':form, 'hint': hint.audience})
+            return render(request, 'audience.html', {'form':form, 'hint': hint})
     
     form = Audience()
-    return render(request, 'audience.html', {'form':form, 'hint': hint.audience})
+    return render(request, 'audience.html', {'form':form, 'hint': hint})
 
 
 # prompt format view 
@@ -155,10 +170,10 @@ def prompt_format(request):
         
         else:
             messages.error(request, "Invalid data format. Please try again")
-            return render(request, 'format_result.html', {'form':form, 'hint': hint.format_result})
+            return render(request, 'format_result.html', {'form':form, 'hint': hint})
     
     form = FormatResult()
-    return render(request, 'format_result.html', {'form':form, 'hint': hint.format_result})
+    return render(request, 'format_result.html', {'form':form, 'hint': hint})
 
 # prompt Writing style view 
 def prompt_writing_style(request):
@@ -171,10 +186,10 @@ def prompt_writing_style(request):
         
         else:
             messages.error(request, "Invalid data format. Please try again")
-            return render(request, 'writing_style.html', {'form':form, 'hint': hint.writing_style})
+            return render(request, 'writing_style.html', {'form':form, 'hint': hint})
     
     form = WritingStyle()
-    return render(request, 'writing_style.html', {'form':form, 'hint': hint.writing_style})
+    return render(request, 'writing_style.html', {'form':form, 'hint': hint})
 
 
 # prompt tone view 
@@ -188,10 +203,10 @@ def prompt_tone(request):
         
         else:
             messages.error(request, "Invalid data format. Please try again")
-            return render(request, 'tone.html', {'form':form, 'hint': hint.tone})
+            return render(request, 'tone.html', {'form':form, 'hint': hint})
     
     form = Tone()
-    return render(request, 'tone.html', {'form':form, 'hint': hint.tone})
+    return render(request, 'tone.html', {'form':form, 'hint': hint})
 
 # prompt keywords view 
 def prompt_keywords(request):
@@ -204,10 +219,10 @@ def prompt_keywords(request):
         
         else:
             messages.error(request, "Invalid data format. Please try again")
-            return render(request, 'keywords.html', {'form':form, 'hint': hint.keywords})
+            return render(request, 'keywords.html', {'form':form, 'hint': hint})
     
     form = Keywords()
-    return render(request, 'keywords.html', {'form':form, 'hint': hint.keywords})
+    return render(request, 'keywords.html', {'form':form, 'hint': hint})
 
 
 # prompt example view 
@@ -221,7 +236,7 @@ def prompt_example(request):
         
         else:
             messages.error(request, "Invalid data format. Please try again")
-            return render(request, 'examples.html', {'form':form, 'hint': hint.examples})
+            return render(request, 'examples.html', {'form':form, 'hint': hint})
     
     form = Examples()
-    return render(request, 'examples.html', {'form':form, 'hint': hint.examples})
+    return render(request, 'examples.html', {'form':form, 'hint': hint})
