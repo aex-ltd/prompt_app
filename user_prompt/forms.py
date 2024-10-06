@@ -2,13 +2,13 @@ from django import forms
 
 from .models import TextPrompt, Hint
 
+
 # text prompt form 
 class TextPromptForm(forms.ModelForm):
 
     class Meta:
         model = TextPrompt
         fields = ['title', 'context', 'role', 'goal', 'restrictions', 'audience','format_result', 'writing_style', 'tone', 'keywords', 'examples']
-
 
 # prompt title form 
 class Title(forms.Form):
@@ -52,7 +52,7 @@ class Keywords(forms.Form):
 
 # prompt example form 
 class Examples(forms.Form):
-    example = forms.CharField(widget=forms.Textarea(attrs={"rows":"5"}), required=False)
+    examples = forms.CharField(widget=forms.Textarea(attrs={"rows":"5"}), required=False)
 
 
 # hint form 
