@@ -405,28 +405,56 @@ button[type="submit"]:hover {
     padding: 10px;
     text-align: center;
 }
-.p-container span{
-    color: gray;
+.p-container h2{
+    color: black;
+    margin-bottom: 30px;
 }
 
 .pt-container{
-    background-color: white;
     border-radius: 25px;
-    width: 50%;
-    height: 280px;
+    width: 98%;
+    height: auto;
     margin: auto;
-    margin-top: 200px;
+    margin-top: 70px;
     padding: 10px;
     text-align: center;
 }
 .pt-container span{
     color: gray;
 }
+.pt-container h2{
+    margin-bottom: 30px;
+    padding: 10px;
+    color: white;
+}
+.form-container {
+    display: flex;
+    justify-content: space-between; /* This evenly spaces the children */
+    width: 100%; /* Ensure it takes full width of the pt-container */
+    margin-top: 20px; /* Adjust margin as needed */
+}
+
+.prompt-update {
+    width: 48%; /* Adjust width to ensure they fit side by side */
+    margin-left: 2%; 
+    background-color: white;
+    padding: 10px;
+    margin-top: -20px;
+    height: auto;
+
+}
+.prompt-update p {
+    font-size: 14px;
+    text-align: justify;
+}
 .p-form{
-    width: 90%;
+    width: 48%;
     margin: auto;
     text-align: center;
     margin-top: -20px;
+    background-color: white;
+    padding: 7px;
+    border-radius: 10px;
 }
 .p-form textarea{
     width: 98%;
@@ -448,6 +476,8 @@ button[type="submit"]:hover {
     cursor: pointer;
 }
 
+
+
 @media (max-width:1300px) {
     .pt-container, .p-container{
         width: 70%;
@@ -456,8 +486,25 @@ button[type="submit"]:hover {
 
 @media (max-width:900px) {
     .pt-container, .p-container{
-        width: 90%;
+        width: 98%;
     }
+    .form-container {
+        flex-direction: column; /* Stack elements vertically */
+        width: 98%;
+        margin-top: -30px;
+    }
+    .p-form {
+        width: 80%;
+        margin-top: 10px; /* Adjust top margin as needed */
+    }
+
+    .prompt-update {
+        width: 80%; /* Full width for prompt-update */
+        margin-left: 0;
+        margin: auto;
+        margin-top: 30px;
+    }
+
 }
 
 .hint-container{
@@ -465,7 +512,7 @@ button[type="submit"]:hover {
     background-color: whitesmoke;
     padding: 10px;
     margin: auto;
-    margin-top: 180px;
+    margin-top: 80px;
 }
 .hint-container p {
     word-break: break-all;
