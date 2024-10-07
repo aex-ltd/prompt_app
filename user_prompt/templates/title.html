@@ -8,6 +8,16 @@
     <link rel="stylesheet" href="{% static 'css/user_style.css' %}">
 </head>
 <body>
+    <header class="top-bar">
+        <div class="welcome">
+            <p>Welcome, {{ user.email }}</p>
+        </div>
+        <div class="top-bar-buttons">
+            <a href="{% url 'dashboard' %}" class="btn">Dashboard</a>
+            <a href="{% url 'logout' %}" class="btn logout">Logout</a>
+        </div>
+    </header>
+    
     {% if messages %}
     <ul class="messages" id="message_class">
         {% for message in messages %}
@@ -17,9 +27,10 @@
     {% endif %}
     <div class="p-container">
         <h2><label for="id_title">Title</label></h2>
-        <span>Give your prompt a title.</span>
+        {% comment %} <span>Give your prompt a title.</span> {% endcomment %}
         <form class="p-form" method="post" id="title">
-            <input type="text" name="title" id="id_title" required>
+            {% csrf_token %}
+            <input type="text" name="title" id="id_title" placeholder="Give your prompt a title" required>
             <button type="submit">Next</button>
         </form>
     </div>    

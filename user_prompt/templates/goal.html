@@ -8,6 +8,16 @@
     <link rel="stylesheet" href="{% static 'css/user_style.css' %}">
 </head>
 <body>
+    <header class="top-bar">
+        <div class="welcome">
+            <p>Welcome, {{ user.email }}</p>
+        </div>
+        <div class="top-bar-buttons">
+            <a href="{% url 'dashboard' %}" class="btn">Dashboard</a>
+            <a href="{% url 'logout' %}" class="btn logout">Logout</a>
+        </div>
+    </header>
+    
     {% if messages %}
     <ul class="messages" id="message_class">
         {% for message in messages %}
@@ -17,10 +27,53 @@
     {% endif %}
     <div class="pt-container">
         <h2><label for="id_goal">Goal</label></h2>
-        <form class="p-form" method="post" id="goal">
-            <textarea name="goal" id="id_goal" placeholder="Set your goal."></textarea>
-            <button type="submit">Next</button>
-        </form>
+        <div class="form-container">
+            <form class="p-form" method="post" id="goal">
+                {% csrf_token %}
+                <textarea name="goal" id="id_goal" placeholder="Set your goal."></textarea>
+                <button type="submit">Next</button>
+            </form>
+            <div class="prompt-update">
+                <h4>Prompt</h4>
+                {% for p in prompt %}
+                
+                {% if p.title %}
+                <p><b>Title:</b> {{p.title}} </p>
+                {% endif %}
+                {% if p.context %}
+                <p><b>Context:</b> {{p.context}} </p>
+                {% endif %}
+                {% if p.role %}
+                <p><b>Role:</b> {{p.role}} </p>
+                {% endif %}
+                {% if p.goal %}
+                <p><b>Goal:</b> {{p.goal}} </p>
+                {% endif %}
+                {% if p.restrictions %}
+                <p><b>Restrictions:</b> {{p.restrictions}} </p>
+                {% endif %}
+                {% if p.audience %}
+                <p><b>Audience:</b> {{p.audience}} </p>
+                {% endif %}
+                {% if p.format_result %}
+                <p><b>Format Result:</b> {{p.format_result}} </p>
+                {% endif %}
+                {% if p.writing_style %}
+                <p><b>Writing Style:</b> {{p.writing_style}} </p>
+                {% endif %}
+                {% if p.tone %}
+                <p><b>Tone:</b> {{p.tone}} </p>
+                {% endif %}
+                {% if p.keywords %}
+                <p><b>Keywords:</b> {{p.keywords}} </p>
+                {% endif %}
+                {% if p.examples %}
+                <p><b>Examples:</b> {{p.examples}} </p>
+                {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
     <!-- hint conatainer  -->
