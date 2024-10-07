@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -20,47 +20,6 @@ def dashboard(request):
     text_prompt = TextPrompt.objects.filter(user=request.user)
 
     return render(request, 'dashboard.html', {'text_prompt':text_prompt})
-
-
-
-# ask ai view 
-@login_required(login_url='login')
-def prompt_view(request):
-    if request.method == 'POST':
-        form = TextPromptForm(request.POST)
-        if form.is_valid():
-            # Get form data
-            context = form.cleaned_data['context']
-            role = form.cleaned_data['role']
-            goal = form.cleaned_data['goal']
-            restrictions = form.cleaned_data['restrictions']
-            audience = form.cleaned_data['audience']
-            format_result = form.cleaned_data['format_result']
-            writing_style = form.cleaned_data['writing_style']
-            tone = form.cleaned_data['tone']
-            keywords = form.cleaned_data['keywords']
-            examples = form.cleaned_data['examples']
-            
-            # Build the prompt with newlines or spaces between sections
-            question = f"{context} {role} {goal} {restrictions} {audience} {format_result} {writing_style} {tone} {keywords} {examples}"
-
-            # save the prompt 
-            prompt = form.save(commit=False)
-            prompt.user = request.user
-            prompt.question = question
-            prompt.save()
-            # success message 
-            messages.success(request, "Prompt saved successfully")
-            return render(request, 'chat.html', {'form':form, 'question':question})
-        
-        else:
-            messages.error(request, "Unable to process prompt. Please make sure you provide valid inputs in form fields")
-            return render(request, 'chat.html', {'form':form})
-
-    # GET request, render empty form
-    form = TextPromptForm()
-    return render(request, 'chat.html', {'form': form})
-
 
 
 # prompt title view 
@@ -436,3 +395,39 @@ def prompt_examples(request):
     
     form = Examples()
     return render(request, 'examples.html', {'form':form, 'hint': hint, 'prompt': prompt})
+
+
+# prompt update view 
+def update_prompt(request, pk):
+    prompt = get_object_or_404(TextPrompt, pk=pk)
+    if request.method == 'POST':
+        form = TextPromptForm(request.POST, instance=prompt)
+        if form.is_valid():
+            updated_prompt = form.save(commit=False)
+            question = (
+            f"{form.cleaned_data['context']} {form.cleaned_data['role']} {form.cleaned_data['goal']} {form.cleaned_data['restrictions']} " 
+            f"{form.cleaned_data['audience']} {form.cleaned_data['format_result']} {form.cleaned_data['writing_style']} "
+            f"{form.cleaned_data['tone']} {form.cleaned_data['keywords']} {form.cleaned_data['examples']} ")
+            updated_prompt.question = question
+            updated_prompt.save()
+
+            messages.success(request, "Prompt saved successfully")
+            return redirect('dashboard')
+
+        else:
+            messages.error(request, "Invalid data format. Please check the form and try again!")
+            return render(request, 'update_prompt.html', {'form':form, 'prompt':prompt})
+    
+    form = TextPromptForm(instance=prompt)
+    return render(request, "update_prompt.html", {'form':form, 'prompt':prompt})
+
+
+# delete prompt view 
+def delete_prompt(request, pk):
+    prompt = get_object_or_404(TextPrompt, pk=pk)
+    if request.method == "POST":
+        prompt.delete()
+        messages.success(request, "Prompt delete successfully!")
+        return redirect('dashboard')
+    
+    return render(request, 'update_prompt.html', {'prompt':prompt})
