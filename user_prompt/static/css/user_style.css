@@ -247,7 +247,16 @@ form button:hover {
     color: #333;
     text-align: justify;
 }
-
+.result .del-prompt{
+    background-color: red;
+}
+.result .del-prompt:hover{
+    background-color: red;
+}
+.result .del-prompt a {
+    color: white;
+    text-decoration: none;
+}
 /* Responsive design */
 @media (max-width: 768px) {
     .container {
