@@ -3,9 +3,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from .views import (
-    dashboard, prompt_view, prompt_context, prompt_audience,
+    dashboard, prompt_context, prompt_audience,
     prompt_examples, prompt_format, prompt_goal, prompt_keywords,prompt_title,
-    prompt_restrictions, prompt_role, prompt_tone, prompt_writing_style
+    prompt_restrictions, prompt_role, prompt_tone, prompt_writing_style,
+    update_prompt, delete_prompt
 )
 
 urlpatterns = [
@@ -21,6 +22,7 @@ urlpatterns = [
     path('prompt_role/', prompt_role, name='prompt_role'),
     path('prompt_tone/', prompt_tone, name='prompt_tone'),
     path('prompt_writing_style/', prompt_writing_style, name='prompt_writing_style'),
-    path('new_prompt/', prompt_view, name='new_prompt'),
+    path('prompt/<int:pk>/update/', update_prompt, name='update_prompt'),
+    path('prompt/<int:pk>/delete/', delete_prompt, name='delete_prompt'),
 ] 
 urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
