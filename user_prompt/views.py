@@ -30,8 +30,12 @@ def prompt_title(request):
         form = Title(request.POST)
 
         if form.is_valid():
+            title = form.cleaned_data['title']
+
+            if not title.endswith('.'):
+                title += '.'
             # create new text prompt 
-            prompt = TextPrompt.objects.create(user=request.user, title=form.cleaned_data['title'])
+            prompt = TextPrompt.objects.create(user=request.user, title=title)
             # get prompt id 
             request.session['prompt_id'] = prompt.id
             prompt.save()
@@ -43,6 +47,7 @@ def prompt_title(request):
     
     form = Title()
     return render(request, 'title.html', {'form':form, 'hint': hint})
+
 
 
 
@@ -67,8 +72,12 @@ def prompt_context(request):
         form = Context(request.POST)
 
         if form.is_valid():
+            context = form.cleaned_data['context']
+            if not context.endswith('.'):
+                context += '.'
+
             for p in prompt:
-                p.context = form.cleaned_data['context']
+                p.context = context
                 p.save()
                 return redirect('prompt_role') 
         
@@ -102,8 +111,12 @@ def prompt_role(request):
         form = Role(request.POST)
 
         if form.is_valid():
+            role = form.cleaned_data['role']
+            if not role.endswith('.'):
+                role += '.'
+
             for p in prompt:
-                p.role = form.cleaned_data['role']
+                p.role = role
                 p.save()
                 return redirect('prompt_goal') 
         
@@ -137,8 +150,12 @@ def prompt_goal(request):
         form = Goal(request.POST)
 
         if form.is_valid():
+            goal = form.cleaned_data['goal']
+            if not goal.endswith('.'):
+                goal += '.'
+
             for p in prompt:
-                p.goal = form.cleaned_data['goal']
+                p.goal = goal
                 p.save()
                 return redirect('prompt_restrictions')  
         
@@ -172,8 +189,12 @@ def prompt_restrictions(request):
         form = Restrictions(request.POST)
 
         if form.is_valid():
+            restrictions = form.cleaned_data['restrictions']
+            if not restrictions.endswith('.'):
+                restrictions += '.'
+
             for p in prompt:
-                p.restrictions = form.cleaned_data['restrictions']
+                p.restrictions = restrictions
                 p.save()
                 return redirect('prompt_audience') 
         
@@ -207,8 +228,12 @@ def prompt_audience(request):
         form = Audience(request.POST)
 
         if form.is_valid():
+            audience = form.cleaned_data['audience']
+            if not audience.endswith('.'):
+                audience += '.'
+
             for p in prompt:
-                p.audience = form.cleaned_data['audience']
+                p.audience = audience
                 p.save()
                 return redirect('prompt_format') 
         
@@ -242,8 +267,12 @@ def prompt_format(request):
         form = FormatResult(request.POST)
 
         if form.is_valid():
+            format_result = form.cleaned_data['format_result']
+            if not format_result.endswith('.'):
+                format_result += '.'
+
             for p in prompt:
-                p.format_result = form.cleaned_data['format_result']
+                p.format_result = format_result
                 p.save()
                 return redirect('prompt_writing_style') 
         
@@ -277,8 +306,12 @@ def prompt_writing_style(request):
         form = WritingStyle(request.POST)
 
         if form.is_valid():
+            writing_style = form.cleaned_data['writing_style']
+            if not writing_style.endswith('.'):
+                writing_style += '.'
+
             for p in prompt:
-                p.writing_style = form.cleaned_data['writing_style']
+                p.writing_style = writing_style
                 p.save()
                 return redirect('prompt_tone') 
         
@@ -312,8 +345,12 @@ def prompt_tone(request):
         form = Tone(request.POST)
 
         if form.is_valid():
+            tone = form.cleaned_data['tone'] 
+            if not tone.endswith('.'):
+                tone += '.'
+
             for p in prompt:
-                p.tone = form.cleaned_data['tone']
+                p.tone = tone
                 p.save()
                 return redirect('prompt_keywords') 
         
@@ -347,8 +384,12 @@ def prompt_keywords(request):
         form = Keywords(request.POST)
 
         if form.is_valid():
+            keywords = form.cleaned_data['keywords']
+            if not keywords.endswith('.'):
+                keywords += '.'
+
             for p in prompt:
-                p.keywords = form.cleaned_data['keywords']
+                p.keywords = keywords
                 p.save()
                 return redirect('prompt_examples') 
         
@@ -382,8 +423,12 @@ def prompt_examples(request):
         form = Examples(request.POST)
 
         if form.is_valid():
+            examples = form.cleaned_data['examples']
+            if not examples.endswith('.'):
+                examples += '.'
+                
             for p in prompt:
-                p.examples = form.cleaned_data['examples']
+                p.examples = examples
                 p.question = f"{p.context} {p.role} {p.goal} {p.restrictions} {p.audience} {p.format_result} {p.writing_style} {p.tone} {p.keywords} {p.examples}"
                 p.save()
                 messages.success(request, "Prompt saved successfully.")
@@ -398,6 +443,7 @@ def prompt_examples(request):
 
 
 # prompt update view 
+@login_required(login_url='login')
 def update_prompt(request, pk):
     prompt = get_object_or_404(TextPrompt, pk=pk)
     if request.method == 'POST':
@@ -423,6 +469,7 @@ def update_prompt(request, pk):
 
 
 # delete prompt view 
+@login_required(login_url='login')
 def delete_prompt(request, pk):
     prompt = get_object_or_404(TextPrompt, pk=pk)
     if request.method == "POST":
