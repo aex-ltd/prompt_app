@@ -21,6 +21,8 @@ def dashboard(request):
 
     return render(request, 'dashboard.html', {'text_prompt':text_prompt})
 
+
+
 # ask ai view 
 @login_required(login_url='login')
 def prompt_view(request):
@@ -59,7 +61,10 @@ def prompt_view(request):
     form = TextPromptForm()
     return render(request, 'chat.html', {'form': form})
 
+
+
 # prompt title view 
+@login_required(login_url='login')
 def prompt_title(request):
     hint = Hint.objects.all()
     if request.method == 'POST':
@@ -80,21 +85,33 @@ def prompt_title(request):
     form = Title()
     return render(request, 'title.html', {'form':form, 'hint': hint})
 
+
+
 # prompt context view 
+@login_required(login_url='login')
 def prompt_context(request):
     hint = Hint.objects.all()
+    # get prompt_id from session 
+    prompt_id = None 
+    try:
+        prompt_id = int(request.session.get('prompt_id'))
+    except ( ValueError, TypeError):
+        prompt_id = 0
+
     # get prompt 
-    prompt = TextPrompt.objects.get(user=request.user, id=int(request.session.get('prompt_id')))
+    prompt = TextPrompt.objects.filter(user=request.user, id=prompt_id)
     if not prompt:
-        messages.error(request, "Unable to fetch prompt!")
+        messages.error(request, "Unable to fetch prompt. Please create a new prompt.")
+        return redirect('prompt_title')
 
     if request.method == 'POST':
         form = Context(request.POST)
 
         if form.is_valid():
-            prompt.context = form.cleaned_data['context']
-            prompt.save()
-            return redirect('prompt_role') 
+            for p in prompt:
+                p.context = form.cleaned_data['context']
+                p.save()
+                return redirect('prompt_role') 
         
         else:
             messages.error(request, "Invalid data format. Please try again")
@@ -104,21 +121,32 @@ def prompt_context(request):
     return render(request, 'context.html', {'form':form, 'hint': hint, 'prompt': prompt})
 
 
+
 # prompt role view 
+@login_required(login_url='login')
 def prompt_role(request):
     hint = Hint.objects.all()
-    # get prompt 
-    prompt = TextPrompt.objects.get(user=request.user, id=int(request.session.get('prompt_id')))
-    if not prompt:
-        messages.error(request, "Unable to fetch prompt!") 
+    # get prompt_id from session 
+    prompt_id = None 
+    try:
+        prompt_id = int(request.session.get('prompt_id'))
+    except ( ValueError, TypeError):
+        prompt_id = 0
 
+    # get prompt 
+    prompt = TextPrompt.objects.filter(user=request.user, id=prompt_id)
+    if not prompt:
+        messages.error(request, "Unable to fetch prompt. Please create a new prompt.")
+        return redirect('prompt_title')
+    
     if request.method == 'POST':
         form = Role(request.POST)
 
         if form.is_valid():
-            prompt.role = form.cleaned_data['role']
-            prompt.save()
-            return redirect('prompt_goal') 
+            for p in prompt:
+                p.role = form.cleaned_data['role']
+                p.save()
+                return redirect('prompt_goal') 
         
         else:
             messages.error(request, "Invalid data format. Please try again")
@@ -127,21 +155,33 @@ def prompt_role(request):
     form = Role()
     return render(request, 'role.html', {'form':form, 'hint': hint, 'prompt':prompt})
 
+
+
 #prompt goal view 
+@login_required(login_url='login')
 def prompt_goal(request):
     hint = Hint.objects.all()
+    # get prompt_id from session 
+    prompt_id = None 
+    try:
+        prompt_id = int(request.session.get('prompt_id'))
+    except ( ValueError, TypeError):
+        prompt_id = 0
+
     # get prompt 
-    prompt = TextPrompt.objects.get(user=request.user, id=int(request.session.get('prompt_id')))
+    prompt = TextPrompt.objects.filter(user=request.user, id=prompt_id)
     if not prompt:
-        messages.error(request, "Unable to fetch prompt!")
+        messages.error(request, "Unable to fetch prompt. Please create a new prompt.")
+        return redirect('prompt_title')
 
     if request.method == 'POST':
         form = Goal(request.POST)
 
         if form.is_valid():
-            prompt.goal = form.cleaned_data['goal']
-            prompt.save()
-            return redirect('prompt_restrictions') 
+            for p in prompt:
+                p.goal = form.cleaned_data['goal']
+                p.save()
+                return redirect('prompt_restrictions')  
         
         else:
             messages.error(request, "Invalid data format. Please try again")
@@ -151,21 +191,32 @@ def prompt_goal(request):
     return render(request, 'goal.html', {'form':form, 'hint': hint, 'prompt':prompt})
 
 
+
 # prompt restrictions view 
+@login_required(login_url='login')
 def prompt_restrictions(request):
     hint = Hint.objects.all()
+    # get prompt_id from session 
+    prompt_id = None 
+    try:
+        prompt_id = int(request.session.get('prompt_id'))
+    except ( ValueError, TypeError):
+        prompt_id = 0
+
     # get prompt 
-    prompt = TextPrompt.objects.get(user=request.user, id=int(request.session.get('prompt_id')))
+    prompt = TextPrompt.objects.filter(user=request.user, id=prompt_id)
     if not prompt:
-        messages.error(request, "Unable to fetch prompt!")
+        messages.error(request, "Unable to fetch prompt. Please create a new prompt.")
+        return redirect('prompt_title')
 
     if request.method == 'POST':
         form = Restrictions(request.POST)
 
         if form.is_valid():
-            prompt.restrictions = form.cleaned_data["restrictions"]
-            prompt.save()
-            return redirect('prompt_audience') 
+            for p in prompt:
+                p.restrictions = form.cleaned_data['restrictions']
+                p.save()
+                return redirect('prompt_audience') 
         
         else:
             messages.error(request, "Invalid data format. Please try again")
@@ -174,21 +225,33 @@ def prompt_restrictions(request):
     form = Restrictions()
     return render(request, 'restrictions.html', {'form':form, 'hint': hint, 'prompt':prompt})
 
+
+
 # prompt audience view 
+@login_required(login_url='login')
 def prompt_audience(request):
     hint = Hint.objects.all()
+    # get prompt_id from session 
+    prompt_id = None 
+    try:
+        prompt_id = int(request.session.get('prompt_id'))
+    except ( ValueError, TypeError):
+        prompt_id = 0
+
     # get prompt 
-    prompt = TextPrompt.objects.get(user=request.user, id=int(request.session.get('prompt_id')))
+    prompt = TextPrompt.objects.filter(user=request.user, id=prompt_id)
     if not prompt:
-        messages.error(request, "Unable to fetch prompt!")
+        messages.error(request, "Unable to fetch prompt. Please create a new prompt.")
+        return redirect('prompt_title')
 
     if request.method == 'POST':
         form = Audience(request.POST)
 
         if form.is_valid():
-            prompt.audience = form.cleaned_data['audience']
-            prompt.save()
-            return redirect('prompt_format')
+            for p in prompt:
+                p.audience = form.cleaned_data['audience']
+                p.save()
+                return redirect('prompt_format') 
         
         else:
             messages.error(request, "Invalid data format. Please try again")
@@ -198,21 +261,32 @@ def prompt_audience(request):
     return render(request, 'audience.html', {'form':form, 'hint': hint, 'prompt': prompt})
 
 
+
 # prompt format view 
+@login_required(login_url='login')
 def prompt_format(request):
     hint = Hint.objects.all()
+    # get prompt_id from session 
+    prompt_id = None 
+    try:
+        prompt_id = int(request.session.get('prompt_id'))
+    except ( ValueError, TypeError):
+        prompt_id = 0
+
     # get prompt 
-    prompt = TextPrompt.objects.get(user=request.user, id=int(request.session.get('prompt_id')))
+    prompt = TextPrompt.objects.filter(user=request.user, id=prompt_id)
     if not prompt:
-        messages.error(request, "Unable to fetch prompt!")
+        messages.error(request, "Unable to fetch prompt. Please create a new prompt.")
+        return redirect('prompt_title')
 
     if request.method == 'POST':
         form = FormatResult(request.POST)
 
         if form.is_valid():
-            prompt.format_result = form.cleaned_data['format_result']
-            prompt.save()
-            return redirect('prompt_writing_style')
+            for p in prompt:
+                p.format_result = form.cleaned_data['format_result']
+                p.save()
+                return redirect('prompt_writing_style') 
         
         else:
             messages.error(request, "Invalid data format. Please try again")
@@ -221,21 +295,33 @@ def prompt_format(request):
     form = FormatResult()
     return render(request, 'format_result.html', {'form':form, 'hint': hint, 'prompt': prompt})
 
+
+
 # prompt Writing style view 
+@login_required(login_url='login')
 def prompt_writing_style(request):
     hint = Hint.objects.all()
+    # get prompt_id from session 
+    prompt_id = None 
+    try:
+        prompt_id = int(request.session.get('prompt_id'))
+    except ( ValueError, TypeError):
+        prompt_id = 0
+
     # get prompt 
-    prompt = TextPrompt.objects.get(user=request.user, id=int(request.session.get('prompt_id')))
+    prompt = TextPrompt.objects.filter(user=request.user, id=prompt_id)
     if not prompt:
-        messages.error(request, "Unable to fetch prompt!")
+        messages.error(request, "Unable to fetch prompt. Please create a new prompt.")
+        return redirect('prompt_title')
 
     if request.method == 'POST':
         form = WritingStyle(request.POST)
 
         if form.is_valid():
-            prompt.writing_style = form.cleaned_data["writing_style"]
-            prompt.save()
-            return redirect('prompt_tone')
+            for p in prompt:
+                p.writing_style = form.cleaned_data['writing_style']
+                p.save()
+                return redirect('prompt_tone') 
         
         else:
             messages.error(request, "Invalid data format. Please try again")
@@ -245,21 +331,32 @@ def prompt_writing_style(request):
     return render(request, 'writing_style.html', {'form':form, 'hint': hint, 'prompt': prompt})
 
 
+
 # prompt tone view 
+@login_required(login_url='login')
 def prompt_tone(request):
     hint = Hint.objects.all()
+    # get prompt_id from session 
+    prompt_id = None 
+    try:
+        prompt_id = int(request.session.get('prompt_id'))
+    except ( ValueError, TypeError):
+        prompt_id = 0
+
     # get prompt 
-    prompt = TextPrompt.objects.get(user=request.user, id=int(request.session.get('prompt_id')))
+    prompt = TextPrompt.objects.filter(user=request.user, id=prompt_id)
     if not prompt:
-        messages.error(request, "Unable to fetch prompt!")
+        messages.error(request, "Unable to fetch prompt. Please create a new prompt.")
+        return redirect('prompt_title')
 
     if request.method == 'POST':
         form = Tone(request.POST)
 
         if form.is_valid():
-            prompt.tone = form.cleaned_data['tone']
-            prompt.save()
-            return redirect('prompt_keywords')
+            for p in prompt:
+                p.tone = form.cleaned_data['tone']
+                p.save()
+                return redirect('prompt_keywords') 
         
         else:
             messages.error(request, "Invalid data format. Please try again")
@@ -268,21 +365,33 @@ def prompt_tone(request):
     form = Tone()
     return render(request, 'tone.html', {'form':form, 'hint': hint, 'prompt': prompt})
 
+
+
 # prompt keywords view 
+@login_required(login_url='login')
 def prompt_keywords(request):
     hint = Hint.objects.all()
+    # get prompt_id from session 
+    prompt_id = None 
+    try:
+        prompt_id = int(request.session.get('prompt_id'))
+    except ( ValueError, TypeError):
+        prompt_id = 0
+
     # get prompt 
-    prompt = TextPrompt.objects.get(user=request.user, id=int(request.session.get('prompt_id')))
+    prompt = TextPrompt.objects.filter(user=request.user, id=prompt_id)
     if not prompt:
-        messages.error(request, "Unable to fetch prompt!")
+        messages.error(request, "Unable to fetch prompt. Please create a new prompt.")
+        return redirect('prompt_title')
 
     if request.method == 'POST':
         form = Keywords(request.POST)
 
         if form.is_valid():
-            prompt.keywords = form.cleaned_data['keywords']
-            prompt.save()
-            return redirect('prompt_examples')
+            for p in prompt:
+                p.keywords = form.cleaned_data['keywords']
+                p.save()
+                return redirect('prompt_examples') 
         
         else:
             messages.error(request, "Invalid data format. Please try again")
@@ -292,22 +401,34 @@ def prompt_keywords(request):
     return render(request, 'keywords.html', {'form':form, 'hint': hint, 'prompt': prompt})
 
 
+
 # prompt example view 
+@login_required(login_url='login')
 def prompt_examples(request):
     hint = Hint.objects.all()
+    # get prompt_id from session 
+    prompt_id = None 
+    try:
+        prompt_id = int(request.session.get('prompt_id'))
+    except ( ValueError, TypeError):
+        prompt_id = 0
+
     # get prompt 
-    prompt = TextPrompt.objects.get(user=request.user, id=int(request.session.get('prompt_id')))
+    prompt = TextPrompt.objects.filter(user=request.user, id=prompt_id)
     if not prompt:
-        messages.error(request, "Unable to fetch prompt!")
+        messages.error(request, "Unable to fetch prompt. Please create a new prompt.")
+        return redirect('prompt_title')
 
     if request.method == 'POST':
         form = Examples(request.POST)
 
         if form.is_valid():
-            prompt.examples = form.cleaned_data['examples']
-            prompt.question = f" {prompt.context} {prompt.role} {prompt.goal} {prompt.restrictions} {prompt.audience} {prompt.format_result} {prompt.writing_style} {prompt.tone} {prompt.keywords} {prompt.examples}"
-            prompt.save()
-            return redirect('dashboard')
+            for p in prompt:
+                p.examples = form.cleaned_data['examples']
+                p.question = f"{p.context} {p.role} {p.goal} {p.restrictions} {p.audience} {p.format_result} {p.writing_style} {p.tone} {p.keywords} {p.examples}"
+                p.save()
+                messages.success(request, "Prompt saved successfully.")
+                return redirect('dashboard') 
         
         else:
             messages.error(request, "Invalid data format. Please try again")
