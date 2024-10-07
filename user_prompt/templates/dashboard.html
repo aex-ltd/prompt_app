@@ -21,7 +21,7 @@
         {% if user.is_authenticated %}
         <div class="top-dashboard-div">
             <p class"greetings"><span>Welcome</span>, {{user.email}} </p>
-            <button class="logout"><a href="{% url "logout" %}">Logout</a></button>
+            <button class="logout"><a href="{% url "logout"  %}">Logout</a></button>
             </div>
         {% else %}
         <div class="top-dashboard-div">
@@ -45,7 +45,7 @@
                     <!-- Example list items -->
                     <li>
                         <span>{{text.title|truncatewords:15}}</span>
-                        <button class="view-btn"><a href=""><b>View</b></a></button>
+                        <button class="view-btn"><a href="{% url "update_prompt" text.id %}"><b>View</b></a></button>
                     </li>
                 </ul>
                 {% endfor %}

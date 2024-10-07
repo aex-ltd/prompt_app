@@ -18,21 +18,24 @@
         </div>
     </header>
 
+    
+
+    <!-- Django messages inside form -->
+    {% if messages %}
+        <ul class="messages" id="message_class">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <div class="prompt-container">
-        <h2>Create New Prompt</h2>
+        <h2>Edit Prompt</h2>
 
         <form method="post" id="textPromptForm">
             {% csrf_token %}
-
-            <!-- Django messages inside form -->
-            {% if messages %}
-                <ul class="messages" id="message_class">
-                    {% for message in messages %}
-                        <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-
+            {% comment %} {{form}} {% endcomment %}
+            <input type='hidden' name="prompt_id" value="{{prompt.id}}">
             <!-- Form fields with hints -->
             <div class="form-field">
                 <div class="label-hint">
@@ -44,7 +47,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.title }}
+                {% comment %} <input type="text" name="title" id="id_title" value="{{ title }}" required> {% endcomment %}
+                {{form.title}}
             </div>
 
             <div class="form-field">
@@ -57,7 +61,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.context }}
+                {% comment %} <textarea name="context" id="id_context" value="{{ prompt.context }}"></textarea> {% endcomment %}
+                {{form.context}}
             </div>
             
             <div class="form-field">
@@ -70,7 +75,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.role }}
+                {% comment %} <textarea  name="role" id="id_role" value="{{ prompt.roles }}"></textarea> {% endcomment %}
+                {{form.role}}
             </div>
             
             <div class="form-field">
@@ -83,7 +89,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.goal }}
+                {% comment %} <textarea name="goal" id="id_goal" value="{{ prompt.goal }}"></textarea> {% endcomment %}
+                {{form.goal}}
             </div>
             
             <div class="form-field">
@@ -96,7 +103,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.restrictions }}
+                {% comment %} <textarea name="restrictions" id="id_restrictions" value="{{ prompt.restrictions }}"></textarea> {% endcomment %}
+                {{form.restrictions}}
             </div>
             
             <div class="form-field">
@@ -109,7 +117,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.audience }}
+                {% comment %} <textarea name="audience" id="id_audience" value="{{ prompt.audience }}"></textarea> {% endcomment %}
+                {{form.audience}}
             </div>
             
             <div class="form-field">
@@ -122,7 +131,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.format_result }}
+                {% comment %} <textarea name="format_result" id="id_format_result" value="{{ prompt.format_result }}"></textarea> {% endcomment %}
+                {{form.format_result}}
             </div>
             
             <div class="form-field">
@@ -135,7 +145,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.writing_style }}
+                {{form.writing_style}}
+                {% comment %} <textarea name="writing_style" id="id_writing_style" value="{{ prompt.writing_style }}"></textarea> {% endcomment %}
             </div>
             
             <div class="form-field">
@@ -148,7 +159,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.tone }}
+                {{form.tone}}
+                {% comment %} <textarea name="tone" id="id_tone" value="{{ prompt.tone }}"></textarea> {% endcomment %}
             </div>
             
             <div class="form-field">
@@ -161,7 +173,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.keywords }}
+                {{form.keywords}}
+                {% comment %} <textarea name="keywords" id="id_keywords" value="{{ prompt.keywords }}"></textarea> {% endcomment %}
             </div>
             
             <div class="form-field">
@@ -174,7 +187,8 @@
                         </span>
                     </span>
                 </div>
-                {{ form.examples }}
+                {{form.examples}}
+                {% comment %} <textarea name="examples" id="id_examples" value="{{ prompt.examples }}"></textarea> {% endcomment %}
             </div>
             
 
@@ -182,10 +196,16 @@
         </form>
 
         <div class="result">
-            {% if question %}
+            {% if prompt %}
             <h4>Prompt:</h4>
-            <p>{{ question }}</p>
+            <p>{{ prompt.question }}</p>
             {% endif %}
+            <br/>
+            <form method="post" action="{% url 'delete_prompt' prompt.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="prompt_id" value="{{ prompt.id }}">
+                <button class="del-prompt" type="submit">Delete prompt</button>
+            </form>
         </div> 
     </div>
 
