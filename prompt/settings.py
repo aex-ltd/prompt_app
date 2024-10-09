@@ -129,16 +129,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
-
-OPENAI_API_KEY = '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'
-GEMINI_TOKEN = 'AIzaSyD1mv4mchGXAa2sJ_X5DlYif0brXpLk4uw'
-
-
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'aex-nigeria.com'
-EMAIL_PORT = 465
-# EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'cletus@aex-nigeria.com'  # Replace with your email
-EMAIL_HOST_PASSWORD = '@3xC0MP@NY'  # Replace with your email password
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
